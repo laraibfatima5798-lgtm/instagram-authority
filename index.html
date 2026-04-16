@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Authority Section | Animated Edition</title>
+    <style>
+        /* --- RESET & BASE STYLES (unchanged colors & layout) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* --- SHARED UTILITIES --- */
+        .pink-gradient-text, .pink-gradient {
+            background: linear-gradient(90deg, #ff00cc, #ff6600);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        /* --- ANIMATION KEYFRAMES (new, subtle) --- */
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.4;
+                filter: blur(70px);
+            }
+            100% {
+                opacity: 0.75;
+                filter: blur(85px);
+            }
+        }
+
+        @keyframes gentleScale {
+            0% {
+                transform: scale(0.96);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmerFlow {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* Icon floating animation (new, for social icons movement) */
+        @keyframes iconFloat {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(2deg);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        /* Image subtle breathing/zoom animation for the main card */
+        @keyframes imageBreathing {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 40px rgba(255, 69, 0, 0.2);
+            }
+            50% {
+                transform: scale(1.01);
+                box-shadow: 0 0 55px rgba(255, 0, 128, 0.5);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 40px rgba(255, 69, 0, 0.2);
+            }
+        }
+
+        /* NEW: Left-to-right text slide animation for hero text elements */
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Individual text elements animation with different delays */
+        .hero-section .content-box .subtitle {
+            animation: slideInFromLeft 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0;
+            animation-delay: 0.1s;
+        }
+
+        .hero-section .content-box .main-title {
+            animation: slideInFromLeft 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0;
+            animation-delay: 0.2s;
+        }
+
+        .hero-section .content-box .headline {
+            animation: slideInFromLeft 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0;
+            animation-delay: 0.35s;
+        }
+
+        .hero-section .content-box .description {
+            animation: slideInFromLeft 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0;
+            animation-delay: 0.5s;
+        }
+
+        .hero-section .content-box .buy-btn {
+            animation: slideInFromLeft 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0;
+            animation-delay: 0.65s;
+        }
+
+        .hero-section .content-box .trust-footer {
+            animation: slideInFromLeft 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0;
+            animation-delay: 0.8s;
+        }
+
+        /* initial staggered reveal for sections (preserve existing) */
+        .hero-section, .info-section, .learning-section, .pricing-section {
+            animation: fadeSlideUp 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            opacity: 0; /* start hidden, revealed by animation */
+        }
+
+        .hero-section {
+            animation-delay: 0.05s;
+        }
+        .info-section {
+            animation-delay: 0.2s;
+        }
+        .learning-section {
+            animation-delay: 0.35s;
+        }
+        .pricing-section {
+            animation-delay: 0.5s;
+        }
+
+        /* --- SECTION 1: HERO (keep exact visual + NEW animations for image, icons and text slide) --- */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 5%;
+            background-image: radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+
+        .pink-glow {
+            position: absolute;
+            top: 0;
+            left: -10%;
+            width: 50%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 0, 150, 0.25) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: 1;
+            pointer-events: none;
+            animation: glowPulse 3s infinite alternate ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2;
+        }
+
+        .content-box {
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .subtitle {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: #777;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .main-title {
+            font-size: 50px;
+            font-weight: 300;
+            margin-bottom: 25px;
+        }
+
+        .main-title span {
+            background: linear-gradient(90deg, #ff00cc, #ffcc00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .headline {
+            font-size: 38px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .headline .highlight-pink {
+            background: linear-gradient(135deg, #ff4da6, #ff00cc, #ff4da6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .accent-text {
+            background: linear-gradient(90deg, #ff4da6, #ffcc00, #ff4da6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .description {
+            font-size: 18px;
+            color: #aaa;
+            line-height: 1.5;
+            max-width: 500px;
+            margin-bottom: 35px;
+        }
+
+        /* button hover + transition enhanced */
+        .buy-btn {
+            background: linear-gradient(to right, #f27121, #e94057, #8a2387);
+            background-size: 150% auto;
+            color: white;
+            border: none;
+            padding: 16px 60px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(233, 64, 87, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.03);
+            filter: brightness(1.08);
+            box-shadow: 0 15px 30px rgba(233, 64, 87, 0.6);
+            background-position: right center;
+        }
+
+        .buy-btn:active {
+            transform: scale(0.98);
+        }
+
+        .trust-footer {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            font-size: 10px;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        .image-side {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .image-card {
+            width: 420px;
+            height: 520px;
+            border-radius: 100px 10px 100px 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.2);
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.3s;
+            /* NEW: apply gentle breathing animation to the main image container */
+            animation: imageBreathing 4s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        /* Keep hover effect but override animation while hovering? we want both, but not conflicting */
+        .image-card:hover {
+            transform: scale(1.02) translateY(-6px) !important; /* override animation on hover with extra scale */
+            box-shadow: 0 20px 40px rgba(255, 0, 128, 0.5);
+            animation: none; /* pause breathing for smoother interaction, but keep nice effect */
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .social-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            color: #555;
+            font-size: 20px;
+        }
+
+        /* NEW: Animate each icon with floating motion with different delays for organic movement */
+        .social-icons div {
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            animation: iconFloat 2.2s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        /* Individual delays for each icon to create wave effect */
+        .social-icons div:nth-child(1) { animation-delay: 0s; }
+        .social-icons div:nth-child(2) { animation-delay: 0.3s; }
+        .social-icons div:nth-child(3) { animation-delay: 0.6s; }
+        .social-icons div:nth-child(4) { animation-delay: 0.9s; }
+        .social-icons div:nth-child(5) { animation-delay: 1.2s; }
+
+        .social-icons div:hover {
+            color: #ff0080;
+            transform: scale(1.25) translateY(-2px) !important;
+            animation: none; /* stop floating on hover to avoid conflict but keep fun */
+            text-shadow: 0 0 10px #ff0080;
+        }
+
+        .verify-tag {
+            background: #0095f6;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .verify-tag:hover {
+            background: #1da1f2;
+            transform: scale(1.05);
+        }
+
+        /* --- SECTION 2: INFO & TIMELINE (hover animations) --- */
+        .info-section {
+            background-color: #0d0d0d;
+            color: white;
+            padding: 100px 5%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .info-container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .top-content {
+            margin-bottom: 80px;
+        }
+
+        .title-secondary {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 300;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .description-text p {
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            max-width: 700px;
+            transition: color 0.2s;
+        }
+        .description-text p:hover {
+            color: #eee;
+        }
+
+        .description-text strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        .pink-highlight {
+            color: #ff00cc;
+            font-weight: 600;
+        }
+
+        .final-call {
+            color: white !important;
+            font-weight: bold;
+            font-size: 18px !important;
+        }
+
+        .timeline-wrapper {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .timeline-title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 60px;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-top: 20px;
+            margin-bottom: 60px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 25px;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: linear-gradient(to right, #ff00cc, #ff6600);
+            z-index: 1;
+            animation: shimmerFlow 3s infinite linear;
+            background-size: 200% auto;
+        }
+
+        .timeline-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(20,20,30,0.3);
+            padding: 16px 10px;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+        .item:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 0, 128, 0.08);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255, 0, 128, 0.3);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #ff0080;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px #ff0080;
+            transition: all 0.3s;
+        }
+        .item:hover .dot {
+            transform: scale(1.4);
+            background-color: #ff44aa;
+            box-shadow: 0 0 14px #ff44aa;
+        }
+
+        .item h4 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            height: 40px;
+        }
+
+        .item p {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .buy-btn-large {
+            background: linear-gradient(to right, #f27121, #e94057, #8a2387);
+            background-size: 150% auto;
+            color: white;
+            border: none;
+            padding: 18px 80px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(233, 64, 87, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn-large:hover {
+            transform: scale(1.03) translateY(-3px);
+            filter: brightness(1.08);
+            box-shadow: 0 20px 35px rgba(233, 64, 87, 0.6);
+            background-position: right center;
+        }
+
+        /* --- SECTION 3: LEARNING & ABOUT (image gallery hover) --- */
+        .learning-section {
+            background-color: #0d0d0d;
+            color: white;
+            padding: 100px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-glow-right {
+            position: absolute;
+            top: 30%;
+            right: -10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(255, 0, 150, 0.22) 0%, transparent 70%);
+            filter: blur(75px);
+            pointer-events: none;
+            z-index: 1;
+            animation: glowPulse 3.5s infinite alternate;
+        }
+
+        .container-third {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-row {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 120px;
+        }
+
+        .gallery-grid {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 0.7;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 0, 200, 0.5);
+            box-shadow: 0 20px 35px rgba(255, 0, 128, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-title {
+            flex: 1;
+        }
+
+        .gallery-title h2 {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .bottom-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-content-wrapper {
+            display: flex;
+            gap: 35px;
+            align-items: start;
+        }
+
+        .social-sidebar {
+            flex: 0 0 auto;
+            width: 130px;
+            opacity: 0.15;
+            pointer-events: none;
+            margin-top: 15px;
+        }
+
+        .side-icon-group {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .side-icon {
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .about-text-content h3 {
+            font-size: 30px;
+            margin-bottom: 30px;
+            font-weight: 800;
+            line-height: 1.1;
+            transition: transform 0.2s;
+        }
+        .about-text-content h3:hover {
+            transform: translateX(5px);
+        }
+
+        .pink-name {
+            background: linear-gradient(to right, #ff00cc, #ff4da6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .text-paragraphs p {
+            color: #ddd;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+            transition: all 0.2s;
+        }
+        .text-paragraphs p:hover {
+            color: white;
+            padding-left: 6px;
+        }
+
+        .text-paragraphs strong {
+            color: white;
+            font-weight: 800;
+        }
+
+        .curved-photo-frame {
+            width: 100%;
+            max-width: 440px;
+            height: 560px;
+            border-top-right-radius: 120px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 60px rgba(255, 0, 150, 0.18);
+            transition: all 0.4s ease;
+        }
+
+        .curved-photo-frame:hover {
+            transform: rotate(1deg) scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 150, 0.5);
+            border-color: rgba(255, 0, 150, 0.4);
+        }
+
+        .curved-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .curved-photo-frame:hover img {
+            transform: scale(1.04);
+        }
+
+        /* --- SECTION 4: PRICING & GUARANTEE (animated price card) --- */
+        .pricing-section {
+            background-color: #0d0d0d;
+            color: white;
+            padding: 100px 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .pricing-container {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+        }
+
+        .price-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.4s ease;
+        }
+        .price-card:hover {
+            transform: translateY(-12px);
+            border-color: #ff44aa;
+            box-shadow: 0 30px 50px rgba(233, 64, 87, 0.4);
+        }
+
+        .installment-price {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .full-price {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        .buy-btn-final {
+            width: 100%;
+            background: linear-gradient(to right, #f27121, #e94057, #8a2387);
+            background-size: 150% auto;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .buy-btn-final:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+            box-shadow: 0 8px 22px rgba(233, 64, 87, 0.6);
+            background-position: right center;
+        }
+
+        .badge-number {
+            font-size: 80px;
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(to bottom, white, #555);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .guarantee-content {
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .guarantee-content:hover {
+            transform: scale(1.02);
+        }
+
+        .badge-stars {
+            font-size: 24px;
+            letter-spacing: 4px;
+            color: #ffb400;
+            margin: 12px 0;
+        }
+
+        .guarantee-title {
+            font-size: 28px;
+            margin: 15px 0;
+        }
+
+        .guarantee-text p {
+            color: #bbb;
+            max-width: 280px;
+        }
+
+        .faq-header {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .faq-header h2 {
+            font-size: 32px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .faq-header h2:hover {
+            letter-spacing: 1px;
+        }
+
+        /* --- MEDIA QUERIES (unchanged, preserve responsiveness) --- */
+        @media (max-width: 1024px) {
+            .top-row { flex-direction: column; text-align: center; }
+            .gallery-grid { order: 2; width: 100%; }
+            .bottom-row { grid-template-columns: 1fr; text-align: center; }
+            .about-content-wrapper { flex-direction: column; align-items: center; }
+            .social-sidebar { display: none; }
+        }
+
+        @media (max-width: 850px) {
+            .container { flex-direction: column; text-align: center; }
+            .image-side { margin-top: 50px; }
+            .description { margin: 0 auto 30px auto; }
+            .timeline-items { grid-template-columns: 1fr; text-align: left; }
+            .timeline-line { display: none; }
+            .item { align-items: flex-start; border-left: 2px solid #ff0080; padding-left: 20px; }
+            .dot { display: none; }
+            .pricing-container { flex-direction: column; gap: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pink-glow"></div>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="content-box">
+                <p class="subtitle">Imersão</p>
+                <h2 class="main-title">Domine o <span>Instagram</span></h2>
+                <h1 class="headline">Seja uma <span class="highlight-pink">autoridade</span><br>no Instagram!</h1>
+                <p class="description">
+                    Participe da imersão e aprenda a criar conteúdo envolvente, aumentar o engajamento e <span class="accent-text">conquistar clientes fiéis.</span>
+                </p>
+                <button class="buy-btn">Comprar agora</button>
+                <div class="trust-footer">
+                    <span>🛡️ COMPRA SEGURA</span>
+                    <span>⭐ SATISFAÇÃO</span>
+                </div>
+            </div>
+
+            <div class="image-side">
+                <div class="image-card">
+                    <img src="img1.jpeg" alt="Main Character">
+                </div>
+                <div class="social-icons">
+                    <div>♡</div> <div>💬</div> <div>✈</div> <div class="verify-tag">✔</div> <div>🔖</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="info-container">
+            <div class="top-content">
+                <h2 class="title-secondary">Transforme sua presença <br> online em <span class="pink-gradient-text">sucesso real!</span></h2>
+                <div class="description-text">
+                    <p>Você terá acceso ao <strong>Passo a Passo Estratégico</strong> para construir ou reestruturar o seu perfil. Vamos desvendar, juntos, <strong>os segredos do Instagram</strong>.</p>
+                    <p>Nossa imersão <span class="pink-highlight">"Domine o Instagram"</span> vai mudar a forma como você se posiciona.</p>
+                    <p class="final-call">Essa imersão é pra você!</p>
+                </div>
+            </div>
+
+            <div class="timeline-wrapper">
+                <h3 class="timeline-title">Para quem é esta <span class="pink-gradient-text">Imersão:</span></h3>
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-items">
+                        <div class="item"><div class="dot"></div><h4>Empreendedores</h4><p>que desejam alavancar negócios.</p></div>
+                        <div class="item"><div class="dot"></div><h4>Influenciadores</h4><p>em busca de maior impacto.</p></div>
+                        <div class="item"><div class="dot"></div><h4>Marketing</h4><p>estratégias eficazes.</p></div>
+                        <div class="item"><div class="dot"></div><h4>Profissionais</h4><p>autoridade no digital.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center;"><button class="buy-btn-large">Comprar agora</button></div>
+        </div>
+    </section>
+
+    <section class="learning-section">
+        <div class="neon-glow-right"></div>
+        <div class="container-third">
+            <div class="top-row">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><img src="img2.jpeg" alt="1"></div>
+                    <div class="gallery-item"><img src="img3.jpeg" alt="2"></div>
+                    <div class="gallery-item"><img src="img4.jpeg" alt="3"></div>
+                    <div class="gallery-item"><img src="img5.jpeg" alt="4"></div>
+                </div>
+                <div class="gallery-title">
+                    <h2>O que você vai aprender na <span class="pink-gradient-text">Imersão:</span></h2>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="about-content-wrapper">
+                    <div class="social-sidebar">
+                        <div class="side-icon-group">
+                            <div class="side-icon">🏠 Home</div><div class="side-icon">🔍 Search</div>
+                            <div class="side-icon">🧭 Explore</div><div class="side-icon">🎬 Reels</div>
+                        </div>
+                    </div>
+                    <div class="about-text-content">
+                        <h3>Quem é <span class="pink-name">Isabella Nóbrega?</span></h3>
+                        <div class="text-paragraphs">
+                            <p>Estrategista Digital e especialista em Marketing com mais de 18 anos de experiência.</p>
+                            <p><strong>Estruturando redes sociais de mais de 200K de seguidores.</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image-frame">
+                    <div class="curved-photo-frame"><img src="img6.jpeg" alt="Instructor"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="pricing-container">
+            <div class="price-card">
+                <h4 class="card-title">Garanta sua inscrição</h4>
+                <div class="installment-price"><span class="pink-gradient-text">12x R$ 9,74</span></div>
+                <p class="full-price">ou R$ 97,00 à vista</p>
+                <button class="buy-btn-final">Comprar agora</button>
+            </div>
+
+            <div class="guarantee-content">
+                <div class="guarantee-icon-box">
+                    <div class="badge-number">7</div>
+                    <div class="badge-stars">★★★★★</div>
+                </div>
+                <h3 class="guarantee-title">7 Dias de <span class="pink-gradient">garantia</span></h3>
+                <div class="guarantee-text"><p>Satisfação garantida ou seu dinheiro de volta em até 7 dias.</p></div>
+            </div>
+        </div>
+        <div class="faq-header"><h2>Perguntas <span class="pink-gradient">Frequentes</span></h2></div>
+    </section>
+
+</body>
+</html>
